@@ -83,8 +83,9 @@ const GlobalStyle = () => (
       p { font-size: 13.5px !important; }
       .step { padding: 26px 18px 66px !important; min-height: 0 !important; }
       .step > div:first-child { margin-bottom: 28px !important; }
-      .g4m2 { gap: 10px !important; }
-      .g4m2 > div { height: 178px !important; margin-top: 0 !important; }
+      .g4m2 { gap: 12px !important; }
+      .g4m2 > div { height: auto !important; margin-top: 0 !important; }
+      .g4m2 .audswatch { height: 88px !important; }
       .g2, .g3, .split { gap: 12px !important; }
       footer > div { padding: 42px 20px 26px !important; }
       .breathe { display: none; }
@@ -113,7 +114,7 @@ const GlobalStyle = () => (
 
       .g2, .g3, .split, .side, .foot, .hiw, .makercard { grid-template-columns: 1fr; }
       .side { gap: 26px; }
-      .g4m2 { grid-template-columns: repeat(2, 1fr); }
+      .g4m2 { grid-template-columns: 1fr; }
       .optcard { grid-template-columns: 88px 1fr; }
       .projcard { grid-template-columns: 96px 1fr; }
       .revrow { grid-template-columns: 96px 1fr; }
@@ -586,6 +587,21 @@ export default function SartaAppV4() {
     m.setAttribute("content", "width=device-width, initial-scale=1");
   }, []);
   const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState(false);
+  const requestAccess = async () => {
+    if (!email.includes("@") || sending) return;
+    setSending(true); setErr(false);
+    try {
+      const r = await fetch("https://formspree.io/f/xppaangy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email, source: "sarta.app early access" }),
+      });
+      if (r.ok) setSent(true); else setErr(true);
+    } catch (e) { setErr(true); }
+    setSending(false);
+  };
   const [sent, setSent] = useState(false);
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -660,7 +676,7 @@ export default function SartaAppV4() {
           <div className="g4m2" style={{ display: "grid", gap: 16 }}>
             {AUDIENCES.map((a) => (
               <div key={a.title} className="hoverlift" style={{ border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden", background: C.cream }}>
-                <Swatch tone={a.tone} h={110} style={{ borderRadius: 0 }} />
+                <div className="audswatch" style={{ height: 110 }}><Swatch tone={a.tone} h={"100%"} style={{ borderRadius: 0, height: "100%" }} /></div>
                 <div style={{ padding: "20px 20px 24px" }}>
                   <div style={{ fontFamily: F.mono, letterSpacing: "0.16em", fontSize: 15, color: C.text, marginBottom: 10 }}>{a.title}</div>
                   <div style={{ fontFamily: F.sans, fontSize: 12.5, fontWeight: 600, lineHeight: 1.7, color: C.burgundy, marginBottom: 10 }}>{a.types}</div>
@@ -745,13 +761,18 @@ export default function SartaAppV4() {
             <div style={{ fontFamily: F.serif, fontStyle: "italic", fontSize: 18, color: C.glacier }}>Thank you — we'll be in touch soon.</div>
           ) : (
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@yourstudio.com"
+              <input value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && requestAccess()} type="email" inputMode="email" autoComplete="email" placeholder="you@yourstudio.com"
                 style={{ fontFamily: F.sans, fontSize: 14.5, padding: "14px 18px", border: "1px solid rgba(244,239,230,0.35)", borderRadius: 100, background: "rgba(255,255,255,0.08)", minWidth: 240, color: C.cream }} />
-              <Btn primary onClick={() => email.includes("@") && setSent(true)} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy }}>Request Access</Btn>
+              <Btn primary onClick={requestAccess} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy, opacity: sending ? 0.6 : 1, pointerEvents: sending ? "none" : "auto" }}>{sending ? "Sending…" : "Request Access"}</Btn>
+            </div>
+          )}
+          {err && !sent && (
+            <div style={{ marginTop: 16, fontFamily: F.sans, fontSize: 13, color: C.glacier }}>
+              Hmm, that didn't go through — please try again, or email mattie@artformalterations.com.
             </div>
           )}
           <div style={{ marginTop: 34, fontFamily: F.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(244,239,230,0.55)" }}>
-            Follow along or reach out — hello@sarta.app
+            Follow along or reach out — mattie@artformalterations.com
           </div>
         </div>
       </section></Reveal>
