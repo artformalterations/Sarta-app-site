@@ -115,6 +115,7 @@ const GlobalStyle = () => (
       .g2, .g3, .split, .side, .foot, .hiw, .makercard { grid-template-columns: 1fr; }
       .side { gap: 26px; }
       .g4m2 { grid-template-columns: 1fr; }
+      .accgrid { grid-template-columns: 1fr !important; }
       .optcard { grid-template-columns: 88px 1fr; }
       .projcard { grid-template-columns: 96px 1fr; }
       .revrow { grid-template-columns: 96px 1fr; }
@@ -587,16 +588,28 @@ export default function SartaAppV4() {
     m.setAttribute("content", "width=device-width, initial-scale=1");
   }, []);
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [interest, setInterest] = useState("");
   const [sending, setSending] = useState(false);
   const [err, setErr] = useState(false);
+  const formReady = firstName.trim() && lastName.trim() && phone.trim() && email.includes("@") && interest;
   const requestAccess = async () => {
-    if (!email.includes("@") || sending) return;
+    if (!formReady || sending) return;
     setSending(true); setErr(false);
     try {
       const r = await fetch("https://formspree.io/f/xppaangy", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ email, source: "sarta.app early access" }),
+        body: JSON.stringify({
+          "First name": firstName.trim(),
+          "Last name": lastName.trim(),
+          "Phone": phone.trim(),
+          email,
+          "Interested in": interest,
+          source: "sarta.app early access",
+        }),
       });
       if (r.ok) setSent(true); else setErr(true);
     } catch (e) { setErr(true); }
@@ -760,10 +773,37 @@ export default function SartaAppV4() {
           {sent ? (
             <div style={{ fontFamily: F.serif, fontStyle: "italic", fontSize: 18, color: C.glacier }}>Thank you — we'll be in touch soon.</div>
           ) : (
-            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && requestAccess()} type="email" inputMode="email" autoComplete="email" placeholder="you@yourstudio.com"
-                style={{ fontFamily: F.sans, fontSize: 14.5, padding: "14px 18px", border: "1px solid rgba(244,239,230,0.35)", borderRadius: 100, background: "rgba(255,255,255,0.08)", minWidth: 240, color: C.cream }} />
-              <Btn primary onClick={requestAccess} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy, opacity: sending ? 0.6 : 1, pointerEvents: sending ? "none" : "auto" }}>{sending ? "Sending…" : "Request Access"}</Btn>
+            <div style={{ maxWidth: 480, margin: "0 auto" }}>
+              {(() => {
+                const field = { fontFamily: F.sans, fontSize: 14.5, padding: "14px 18px", border: "1px solid rgba(244,239,230,0.35)", borderRadius: 100, background: "rgba(255,255,255,0.08)", color: C.cream, width: "100%", boxSizing: "border-box" };
+                return (
+                  <>
+                    <div className="accgrid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      <input value={firstName} onChange={(e) => setFirstName(e.target.value)} autoComplete="given-name" placeholder="First name" style={field} />
+                      <input value={lastName} onChange={(e) => setLastName(e.target.value)} autoComplete="family-name" placeholder="Last name" style={field} />
+                      <input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" inputMode="tel" autoComplete="tel" placeholder="Phone number" style={field} />
+                      <input value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && requestAccess()} type="email" inputMode="email" autoComplete="email" placeholder="you@yourstudio.com" style={field} />
+                    </div>
+                    <div style={{ marginTop: 22, fontFamily: F.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(244,239,230,0.55)" }}>
+                      I'm interested as a…
+                    </div>
+                    <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 12 }}>
+                      {["Maker", "Stylist", "Designer", "Business", "Client"].map((o) => (
+                        <button key={o} onClick={() => setInterest(o)} style={{
+                          fontFamily: F.mono, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer",
+                          padding: "10px 16px", borderRadius: 100, transition: "all .25s ease",
+                          border: `1px solid ${interest === o ? "#F8F3E7" : "rgba(244,239,230,0.35)"}`,
+                          background: interest === o ? "#F8F3E7" : "transparent",
+                          color: interest === o ? C.burgundy : "rgba(244,239,230,0.85)",
+                        }}>{o}</button>
+                      ))}
+                    </div>
+                    <div style={{ marginTop: 22, display: "flex", justifyContent: "center" }}>
+                      <Btn primary onClick={requestAccess} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy, opacity: sending || !formReady ? 0.55 : 1, pointerEvents: sending ? "none" : "auto" }}>{sending ? "Sending…" : "Request Access"}</Btn>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           )}
           {err && !sent && (
