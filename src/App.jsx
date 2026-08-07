@@ -27,7 +27,7 @@ const F = {
 
 const GlobalStyle = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Roboto+Mono:wght@400;500;700&display=swap');
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { margin: 0; overflow-x: hidden; }
@@ -39,7 +39,13 @@ const GlobalStyle = () => (
     }
     @keyframes riseIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .rise { animation: riseIn .7s cubic-bezier(.2,.6,.2,1) both; }
+    @keyframes fabricDrift1 { from { transform: translate(0,0); } to { transform: translate(-34px, 14px); } }
+  @keyframes fabricDrift2 { from { transform: translate(0,0); } to { transform: translate(28px, -10px); } }
+  @keyframes fabricDrift3 { from { transform: translate(0,0); } to { transform: translate(-20px, -12px); } }
+  .drift1 { animation: fabricDrift1 16s ease-in-out infinite alternate; }
+  .drift2 { animation: fabricDrift2 21s ease-in-out infinite alternate; }
+  .drift3 { animation: fabricDrift3 26s ease-in-out infinite alternate; }
+  .rise { animation: riseIn .7s cubic-bezier(.2,.6,.2,1) both; }
     .fade { animation: fadeIn .5s ease both; }
     @media (prefers-reduced-motion: reduce) {
       .rise, .fade { animation: none; }
@@ -75,7 +81,7 @@ const GlobalStyle = () => (
       .strip { padding: 0 !important; }
       .sec-inner { padding: 10px 20px 46px !important; }
       .hero { min-height: 0 !important; }
-      .hero > div:not([aria-hidden]) { padding: 60px 22px 50px !important; }
+      .hero > div:not([aria-hidden]) { padding: 118px 22px 50px !important; }
       .hero .rise { margin-bottom: 22px !important; }
       .hero .herologo svg { height: 118px !important; }
       h1 { font-size: 21px !important; letter-spacing: 0.1em !important; }
@@ -90,7 +96,7 @@ const GlobalStyle = () => (
       footer > div { padding: 42px 20px 26px !important; }
       .breathe { display: none; }
       .iconrow { grid-template-columns: repeat(3, 1fr) !important; row-gap: 26px; justify-items: center; }
-      .herotag { font-size: clamp(54px, 15vw, 84px) !important; line-height: 1.02 !important; margin-bottom: 26px !important; }
+      .herotag { font-size: clamp(38px, 11.4vw, 64px) !important; line-height: 1.08 !important; margin-bottom: 24px !important; }
       .heromono { font-size: 12px !important; letter-spacing: 0.16em !important; margin-bottom: 12px !important; }
       .heroblurb { font-size: 13.5px !important; line-height: 1.75 !important; margin-bottom: 28px !important; }
       .iconrow > div { border-left: none !important; }
@@ -568,7 +574,7 @@ const FloatNav = ({ scrollTo }) => {
 };
 
 const MonogramBand = () => (
-  <div aria-hidden="true" style={{ overflow: "hidden", padding: "4px 0 52px" }}>
+  <div aria-hidden="true" style={{ overflow: "hidden", padding: "64px 0 30px" }}>
     {[0, 1].map((r) => (
       <div key={r} style={{ display: "flex", gap: 30, justifyContent: "center", marginLeft: r ? -46 : 0, marginTop: r ? 20 : 0, opacity: r ? 0.5 : 0.72 }}>
         {Array.from({ length: 30 }).map((_, i) => (
@@ -653,35 +659,42 @@ export default function SartaAppV4() {
         }}>↓</button>
       </section>
 
-      {/* Capability strip */}
-      <Reveal><section style={{ maxWidth: 1100, margin: "0 auto", padding: "78px 24px 30px" }}>
-        <div className="iconrow" style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)" }}>
-          {CAPS.map(([k, label], i) => (
-            <div key={k} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "6px 10px", borderLeft: i === 0 ? "none" : `1px solid ${C.line}`, color: C.burgundy }}>
-              <CapIcon name={k} size={26} />
-              <div style={{ fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", lineHeight: 1.6, textAlign: "center", color: C.text }}>{label}</div>
-            </div>
-          ))}
+      {/* Statement — monogram field with panel */}
+      <Reveal><section style={{ position: "relative", overflow: "hidden", padding: "clamp(70px,9vw,120px) 24px" }}>
+        {/* tiled monogram field */}
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {/* construction grid */}
+          <div style={{ position: "absolute", inset: 0, opacity: 0.5, background: `repeating-linear-gradient(90deg, ${C.glacierDeep}44 0 1px, transparent 1px 148px), repeating-linear-gradient(0deg, ${C.glacierDeep}44 0 1px, transparent 1px 168px)` }} />
+          {/* monogram tiles */}
+          <div style={{ position: "absolute", inset: "-40px 0", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 26 }}>
+            {Array.from({ length: 4 }).map((_, r) => (
+              <div key={r} style={{ display: "flex", gap: 44, justifyContent: "center", marginLeft: r % 2 ? -76 : 0 }}>
+                {Array.from({ length: 16 }).map((_, i) => (
+                  <div key={i} style={{ flexShrink: 0, transform: (i + r) % 2 ? "scaleX(-1)" : "none" }}>
+                    <SartaMonogram height={118} color={C.glacier} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* cream text panel */}
+        <div style={{ position: "relative", maxWidth: 700, margin: "0 auto", background: C.cream, border: `1px solid ${C.glacierDeep}55`, padding: "clamp(38px,6vw,62px) clamp(24px,5vw,56px)", textAlign: "center" }}>
+          <div aria-hidden="true" style={{ position: "absolute", inset: 12, border: `1px solid ${C.glacierDeep}33`, pointerEvents: "none" }} />
+          <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(22px,2.9vw,34px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.text, margin: "0 0 22px" }}>
+            <LineReveal lines={["We stitched both sides together."]} />
+          </h2>
+          <p style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 300, lineHeight: 1.85, color: C.grey, maxWidth: 540, margin: "0 auto" }}>
+            The studio operating system for the mending trades. While you manage
+            the work here, your clients experience Sarta through Sarta Studio—a
+            beautifully designed space to book services, track projects, and
+            communicate with you. Everything stays connected, automatically.
+          </p>
         </div>
       </section></Reveal>
 
-      {/* Statement */}
-      <Reveal><section style={{ maxWidth: 900, margin: "0 auto", padding: "90px 24px 70px", textAlign: "center" }}>
-        <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(22px,2.9vw,34px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.text, margin: "0 0 22px" }}>
-          <LineReveal lines={["We stitched both sides together."]} />
-        </h2>
-        <p style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 300, lineHeight: 1.85, color: C.grey, maxWidth: 620, margin: "0 auto" }}>
-          The studio operating system for the mending trades. While you manage
-          the work here, your clients experience Sarta through Sarta Studio—a
-          beautifully designed space to book services, track projects, and
-          communicate with you. Everything stays connected, automatically.
-        </p>
-      </section></Reveal>
-
-      <MonogramBand />
-
       {/* Who it's for — pillars */}
-      <Reveal><section id="who" style={{ padding: "30px 0 90px" }}>
+      <Reveal><section id="who" style={{ padding: "50px 0 90px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
           <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.text, margin: "0 0 48px" }}>
             <LineReveal lines={["Built for the hands that do the work."]} />
@@ -703,7 +716,7 @@ export default function SartaAppV4() {
 
       {/* Tools */}
       <Reveal><section id="features" style={{ maxWidth: 1280, margin: "0 auto", padding: "100px 24px" }}>
-        <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.text, margin: "0 0 48px" }}>
+        <h2 style={{ fontFamily: F.mono, fontWeight: 700, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.text, margin: "0 0 48px" }}>
           <LineReveal lines={["The tools of the trade."]} />
         </h2>
         <div className="g3" style={{ display: "grid", gap: "34px 44px" }}>
@@ -733,7 +746,7 @@ export default function SartaAppV4() {
               ["Invoice & learn", "Payments collect themselves, and reporting shows what the studio earned and where time went."],
             ].map(([t, d], i) => (
               <div key={t} style={{ padding: "0 28px 0 0", borderLeft: i === 0 ? "none" : "1px solid rgba(69,16,28,0.25)", paddingLeft: i === 0 ? 0 : 28 }}>
-                <div style={{ fontFamily: F.mono, fontSize: 22, color: C.burgundy, marginBottom: 18 }}>{i + 1}</div>
+                <div style={{ fontFamily: F.serif, fontStyle: "italic", fontSize: 26, color: C.burgundy, marginBottom: 18 }}>{i + 1}</div>
                 <div style={{ fontFamily: F.sans, fontSize: 15.5, fontWeight: 500, color: C.text, marginBottom: 12 }}>{t}</div>
                 <p style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, lineHeight: 1.65, color: "rgba(32,29,26,0.62)", margin: 0 }}>{d}</p>
               </div>
@@ -742,19 +755,30 @@ export default function SartaAppV4() {
         </div>
       </section></Reveal>
 
-      {/* Network */}
-      <Reveal><section style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 22, color: C.burgundy }}>
-          <CapIcon name="network" size={38} />
+      {/* Network — airy fabric wash */}
+      <Reveal><section style={{ position: "relative", overflow: "hidden", padding: "clamp(120px,15vw,190px) 24px" }}>
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <svg viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+            <defs>
+              <filter id="soften" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="34" /></filter>
+            </defs>
+            <g filter="url(#soften)">
+              <path className="drift1" d="M-120,420 C240,240 520,520 820,340 C1080,190 1300,320 1560,180 L1560,-80 L-120,-80 Z" fill={C.glacier} opacity="0.38" />
+              <path className="drift2" d="M-120,680 C300,460 640,660 960,470 C1200,330 1380,430 1560,340 L1560,720 L-120,720 Z" fill={C.glacierDeep} opacity="0.16" />
+              <path className="drift3" d="M-160,260 C220,420 620,140 980,300 C1240,410 1420,260 1600,360 L1600,720 L-160,720 Z" fill={C.creamDeep} opacity="0.55" />
+            </g>
+          </svg>
         </div>
-        <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.glacierDeep, margin: "0 0 20px" }}>
-          <LineReveal lines={["The Sarta Network."]} />
-        </h2>
-        <p style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 300, lineHeight: 1.85, color: C.grey, maxWidth: 560, margin: "0 auto" }}>
-          Utilize the Sarta network to outsource work when needed — overflow and
-          out-of-specialty pieces go to trusted Makers, and the client
-          relationship stays yours.
-        </p>
+        <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.glacierDeep, margin: "0 0 20px" }}>
+            <LineReveal lines={["The Sarta Network."]} />
+          </h2>
+          <p style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 300, lineHeight: 1.85, color: C.grey, maxWidth: 560, margin: "0 auto" }}>
+            Utilize the Sarta network to outsource work when needed — overflow and
+            out-of-specialty pieces go to trusted Makers, and the client
+            relationship stays yours.
+          </p>
+        </div>
       </section></Reveal>
 
       {/* Early access + just getting started */}
