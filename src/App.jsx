@@ -51,6 +51,9 @@ const GlobalStyle = () => (
   .stitchline { animation: stitchMarch 2.8s linear infinite; }
   @keyframes nodeBob { from { transform: translate(-50%,-56%); } to { transform: translate(-50%,-44%); } }
   .netnode { animation: nodeBob 5s ease-in-out infinite alternate; }
+  .bpline { stroke-dasharray: 1400; stroke-dashoffset: 1400; opacity: 0.22; animation: bpdraw 2.8s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes bpdraw { to { stroke-dashoffset: 0; } }
+  .bpmark svg { height: clamp(121px, 21.4vw, 214px); width: auto; max-width: 100%; }
   .mlink { transition: background .3s ease, color .3s ease, padding .3s ease, border-radius .3s ease; }
   .mlink:hover { padding-left: 12px !important; padding-right: 12px !important; border-radius: 12px !important; border-bottom-color: transparent !important; }
   .mlink-0:hover { background: #5B0F1F !important; color: #F8F3E7 !important; }
@@ -125,6 +128,7 @@ const GlobalStyle = () => (
       .herotag { font-size: clamp(38px, 11.4vw, 64px) !important; line-height: 1.08 !important; margin-bottom: 24px !important; }
       .heromono { font-size: 12px !important; letter-spacing: 0.16em !important; margin-bottom: 12px !important; }
       .heroblurb { font-size: 13.5px !important; line-height: 1.75 !important; margin-bottom: 28px !important; }
+      .herotriad { margin-top: 24px !important; grid-template-columns: 1fr !important; gap: 30px !important; }
       .iconrow > div { border-left: none !important; }
       .step .g3 button { padding: 20px 12px !important; font-size: 18px !important; }
       .step .g4m2 button { padding: 13px 8px !important; font-size: 15px !important; }
@@ -175,7 +179,7 @@ const GlobalStyle = () => (
 /* ── Sarta wordmark — vectorized from brand logotype ── */
 const LOGO_D = "M256.77 145.10 L256.15 145.42 L255.23 145.52 L250.24 145.03 L248.36 145.00 L243.81 145.79 L243.11 145.69 L242.54 145.32 L241.96 144.48 L241.50 143.39 L231.87 116.33 L229.70 111.48 L227.23 107.16 L225.61 104.88 L223.80 102.72 L221.99 100.92 L220.02 99.25 L217.15 97.34 L213.07 95.34 L209.83 92.70 L208.98 92.30 L207.79 92.04 L206.55 92.04 L205.30 92.28 L204.09 92.70 L202.68 93.41 L199.15 96.03 L194.98 98.82 L191.89 101.46 L189.12 104.42 L186.42 107.89 L183.92 111.55 L177.08 122.26 L174.89 125.32 L172.75 128.00 L169.99 130.98 L167.17 133.50 L164.10 135.73 L161.08 137.44 L159.08 138.32 L157.02 139.01 L153.07 139.76 L142.47 140.34 L139.57 140.30 L137.38 140.08 L135.57 139.69 L133.83 139.11 L132.16 138.34 L130.55 137.36 L129.01 136.18 L127.56 134.83 L126.29 133.32 L125.41 131.97 L124.43 129.68 L123.84 126.66 L123.54 119.95 L123.58 115.40 L123.82 112.87 L124.29 110.42 L126.50 102.97 L127.08 100.57 L127.34 98.51 L127.28 96.25 L127.38 95.77 L127.73 95.39 L129.72 94.51 L130.36 93.81 L130.70 92.94 L131.26 90.41 L131.82 88.97 L135.33 83.03 L140.34 72.94 L156.62 42.94 L171.73 15.63 L175.26 8.21 L176.20 6.78 L177.39 5.76 L178.38 5.38 L179.82 5.23 L185.26 5.81 L187.29 5.81 L188.83 5.48 L191.45 4.44 L192.36 4.34 L195.38 5.18 L197.71 5.51 L200.66 5.61 L207.29 5.48 L208.10 5.65 L208.81 5.98 L209.69 6.95 L210.41 8.62 L253.00 131.95 L256.56 141.41 L257.11 143.64 L257.08 144.49 L256.88 144.97 Z M445.76 145.78 L445.45 145.51 L445.16 144.91 L444.99 143.16 L445.00 23.25 L445.27 11.09 L445.21 9.98 L444.96 9.03 L444.45 8.31 L443.66 7.84 L442.28 7.52 L440.74 7.40 L429.63 7.70 L415.77 7.30 L412.35 7.47 L409.36 7.86 L407.21 8.37 L405.51 8.99 L403.94 9.81 L402.52 10.88 L400.84 12.83 L400.07 14.22 L398.78 17.25 L398.36 17.81 L397.84 18.20 L396.54 18.55 L391.22 18.71 L389.94 18.39 L389.50 18.02 L389.21 17.48 L388.92 15.64 L388.89 12.10 L389.19 11.13 L389.62 10.57 L390.28 10.08 L392.59 8.90 L393.06 8.32 L392.63 7.67 L390.43 6.27 L390.13 5.90 L390.32 5.74 L391.04 5.62 L395.52 5.54 L428.09 5.55 L452.28 5.37 L515.50 5.54 L518.49 5.62 L519.66 5.84 L519.68 6.02 L519.21 6.27 L515.65 7.46 L515.09 7.83 L514.88 8.25 L515.23 8.95 L518.18 11.56 L519.81 13.52 L520.36 14.47 L520.67 15.35 L520.71 16.13 L520.45 16.77 L519.65 17.43 L518.11 18.00 L515.72 18.47 L510.99 19.11 L509.52 19.03 L508.35 18.47 L507.68 17.70 L506.15 15.14 L505.04 13.68 L503.78 12.38 L502.10 11.05 L498.96 9.32 L497.25 8.67 L495.12 8.09 L492.17 7.60 L488.74 7.37 L474.56 7.71 L464.72 7.21 L462.91 7.45 L462.36 7.72 L461.77 8.37 L461.42 9.26 L461.22 10.30 L460.60 17.40 L460.25 24.96 L460.08 34.10 L460.06 65.10 L460.99 85.57 L461.17 94.31 L460.99 119.20 L461.19 136.11 L461.07 140.19 L460.78 143.78 L460.39 145.33 L460.04 145.75 L459.52 145.97 L458.36 145.89 L455.39 145.02 L453.93 144.81 L451.93 144.99 L447.62 145.90 L446.69 145.98 L445.96 145.87 Z M408.82 154.89 L406.95 155.22 L403.82 155.33 L400.11 155.19 L396.38 154.83 L390.46 153.79 L379.76 151.23 L374.02 149.45 L369.38 147.50 L365.30 145.16 L361.29 142.10 L358.38 139.30 L355.59 135.96 L353.38 132.65 L351.35 128.85 L349.75 125.21 L348.24 121.14 L343.82 107.04 L341.95 101.69 L339.74 96.54 L337.20 91.94 L335.51 89.49 L333.61 87.16 L331.48 84.95 L329.36 83.10 L327.35 81.66 L325.54 80.66 L323.67 79.95 L321.78 79.62 L320.52 79.65 L319.25 79.86 L316.45 80.87 L313.44 82.60 L309.82 85.27 L306.49 88.13 L292.89 100.61 L289.94 103.85 L287.86 106.91 L287.01 108.70 L286.39 110.57 L285.91 112.83 L285.65 115.17 L285.60 119.29 L286.07 130.03 L285.70 137.08 L285.97 142.33 L285.81 143.55 L285.49 144.25 L284.74 144.82 L283.68 145.09 L275.24 145.59 L273.95 145.55 L272.86 145.35 L271.99 144.96 L271.47 144.53 L270.96 143.76 L270.72 143.01 L270.54 140.83 L270.85 134.60 L270.93 129.68 L270.81 106.13 L270.92 19.00 L270.55 8.64 L270.72 7.11 L271.28 6.01 L272.34 5.45 L273.79 5.31 L281.02 5.56 L320.89 5.47 L335.23 5.66 L346.37 5.28 L349.77 5.31 L353.98 5.87 L355.82 6.37 L357.59 7.05 L359.28 7.93 L360.63 8.82 L363.38 11.29 L364.71 12.88 L365.88 14.58 L367.57 17.93 L368.23 19.84 L368.71 21.79 L369.03 23.78 L369.20 26.12 L368.98 30.50 L368.04 35.13 L366.47 39.56 L364.18 44.00 L361.76 47.62 L358.99 51.02 L355.70 54.45 L351.89 57.87 L347.07 61.63 L341.29 65.57 L335.93 68.84 L325.71 74.67 L324.72 75.47 L324.00 76.35 L323.61 77.24 L323.63 78.03 L324.10 78.62 L325.37 78.97 L331.18 78.85 L333.60 79.07 L336.06 79.68 L338.46 80.60 L341.69 82.30 L344.77 84.45 L347.61 86.96 L350.13 89.76 L351.73 91.93 L353.28 94.48 L354.62 97.14 L355.89 100.19 L357.76 105.86 L361.76 120.30 L363.20 124.37 L364.67 127.73 L366.93 131.86 L369.39 135.50 L372.41 139.15 L375.52 142.25 L379.16 145.24 L383.04 147.85 L387.42 150.24 L391.94 152.20 L395.06 153.22 L398.31 153.93 L401.74 154.27 L408.56 154.45 L409.18 154.59 L408.95 154.84 Z M639.15 145.09 L637.88 145.37 L634.01 145.10 L629.27 145.45 L628.00 145.11 L626.79 144.13 L625.86 142.67 L624.98 140.59 L619.43 123.92 L616.99 117.36 L614.47 111.81 L611.76 107.13 L610.13 104.83 L608.33 102.68 L606.59 100.92 L604.70 99.31 L595.76 93.40 L594.15 92.59 L592.48 92.16 L591.32 92.14 L589.82 92.45 L588.32 93.02 L586.58 93.91 L579.95 98.30 L576.15 101.46 L573.52 104.24 L570.80 107.71 L568.50 111.08 L561.84 121.53 L559.57 124.67 L557.11 127.68 L554.23 130.72 L551.13 133.46 L548.05 135.65 L545.06 137.31 L543.06 138.18 L540.99 138.88 L538.85 139.40 L536.63 139.74 L533.39 140.01 L526.53 140.28 L523.98 140.25 L521.79 140.03 L519.95 139.64 L518.47 139.14 L516.74 138.35 L515.11 137.36 L513.60 136.19 L512.23 134.87 L511.01 133.40 L509.99 131.81 L508.94 129.53 L508.20 126.80 L507.83 123.60 L507.84 119.99 L508.29 115.06 L509.30 107.96 L510.03 105.31 L511.47 102.02 L511.81 100.79 L511.83 99.85 L511.48 97.45 L511.60 96.69 L512.21 95.84 L514.29 94.02 L515.34 92.46 L516.39 90.16 L518.75 84.08 L520.45 80.56 L544.34 36.66 L555.98 15.96 L557.42 13.06 L559.57 7.89 L560.35 6.71 L561.30 5.86 L562.47 5.42 L563.84 5.29 L572.06 5.61 L578.79 5.51 L584.29 5.60 L590.26 5.39 L591.77 5.56 L593.08 6.00 L593.92 6.64 L594.56 7.57 L595.16 8.99 L599.18 21.08 L622.69 88.71 L628.21 103.96 L628.77 106.06 L629.11 108.26 L629.28 117.02 L629.67 119.65 L630.28 120.84 L631.86 122.37 L632.74 123.87 L633.78 126.46 L635.69 132.29 L636.32 133.64 L637.24 134.63 L639.59 135.90 L640.10 136.47 L640.32 136.96 L640.56 138.86 L640.29 142.44 L639.98 143.94 L639.33 144.96 Z M74.11 144.66 L71.48 145.15 L69.80 145.31 L68.68 145.14 L68.37 144.71 L68.64 144.26 L69.62 143.66 L74.65 141.78 L76.99 140.61 L80.57 138.17 L83.98 135.36 L87.12 132.21 L89.67 128.98 L91.64 125.72 L93.15 122.23 L94.05 119.19 L94.60 116.09 L94.79 112.96 L94.60 109.85 L94.08 107.11 L93.24 104.44 L91.94 101.59 L90.31 98.87 L88.81 96.82 L86.93 94.64 L85.13 92.84 L82.99 90.97 L80.75 89.28 L78.42 87.74 L75.73 86.21 L72.96 84.83 L68.07 82.81 L62.12 80.85 L56.35 79.27 L43.03 75.94 L36.23 73.91 L32.73 72.65 L29.54 71.31 L26.40 69.78 L23.62 68.19 L20.98 66.40 L18.52 64.41 L16.30 62.19 L14.55 59.98 L13.05 57.59 L11.68 54.75 L10.70 52.07 L9.91 48.98 L9.35 45.19 L9.22 41.37 L9.50 37.59 L10.19 33.89 L11.29 30.30 L12.79 26.84 L14.69 23.56 L16.77 20.74 L19.15 18.13 L21.78 15.76 L24.63 13.68 L27.37 12.06 L29.93 10.85 L32.84 9.74 L42.08 6.68 L45.24 5.84 L47.31 5.50 L49.45 5.38 L58.22 5.71 L64.82 5.29 L67.24 5.42 L69.79 6.04 L77.82 8.71 L81.63 10.16 L84.78 11.59 L88.05 13.46 L90.82 15.51 L93.35 17.88 L95.81 20.77 L97.77 23.67 L99.56 27.06 L100.97 30.62 L101.97 34.30 L102.40 36.80 L102.64 39.31 L102.66 41.82 L102.48 44.32 L102.08 46.78 L101.46 49.20 L100.69 51.22 L99.79 52.74 L99.05 53.61 L98.16 54.31 L97.11 54.82 L95.89 55.11 L88.77 54.93 L87.30 54.61 L86.85 54.08 L86.83 53.46 L87.97 48.36 L88.48 43.44 L88.46 39.64 L88.12 36.16 L87.29 32.10 L86.10 28.48 L84.52 25.03 L82.55 21.80 L80.01 18.60 L77.32 15.96 L74.32 13.65 L70.79 11.53 L66.74 9.68 L62.24 8.16 L57.98 7.18 L54.02 6.77 L51.60 6.84 L49.49 7.15 L47.40 7.70 L45.04 8.59 L42.45 9.85 L39.95 11.31 L37.30 13.13 L35.05 14.92 L32.95 16.85 L31.22 18.69 L29.45 20.89 L28.05 22.96 L26.82 25.13 L25.75 27.39 L24.86 29.73 L24.07 32.42 L23.25 37.03 L23.05 41.71 L23.48 46.36 L24.47 50.60 L26.02 54.66 L28.15 58.47 L30.85 61.96 L34.05 65.07 L37.11 67.44 L40.38 69.51 L44.06 71.40 L47.81 72.95 L51.04 74.03 L54.90 75.12 L69.73 78.59 L76.68 80.46 L83.49 82.81 L89.19 85.39 L92.18 87.06 L94.78 88.77 L97.26 90.67 L99.59 92.77 L101.74 95.06 L103.48 97.27 L105.18 99.89 L106.45 102.38 L107.65 105.57 L108.40 108.91 L108.70 112.35 L108.55 115.81 L107.95 119.23 L106.91 122.55 L105.43 125.71 L103.51 128.64 L101.00 131.56 L98.16 134.17 L94.81 136.66 L91.33 138.78 L87.76 140.53 L83.77 142.09 L79.58 143.37 L74.45 144.59 Z M149.16 137.62 L150.77 137.01 L152.29 136.04 L153.96 134.58 L155.75 132.66 L159.65 128.01 L162.60 124.10 L170.77 111.40 L174.46 106.36 L176.93 103.52 L179.60 100.88 L182.21 98.67 L184.97 96.71 L187.88 95.03 L191.22 93.55 L194.69 92.42 L198.60 91.57 L202.93 91.03 L207.37 90.86 L210.91 90.96 L219.97 91.52 L221.32 91.23 L221.79 90.91 L222.08 90.43 L222.21 89.58 L222.12 88.54 L221.13 84.97 L203.01 32.97 L197.17 15.34 L195.93 12.18 L194.73 9.70 L193.64 8.04 L192.64 7.21 L192.12 7.13 L191.61 7.32 L190.39 8.59 L188.04 12.46 L184.60 18.56 L146.51 88.85 L143.00 96.02 L140.55 102.28 L139.48 105.78 L138.68 109.05 L138.07 112.38 L137.65 115.75 L137.44 119.16 L137.46 122.62 L137.70 125.78 L138.14 128.26 L138.77 130.35 L139.68 132.34 L140.92 134.17 L142.25 135.57 L143.77 136.68 L145.43 137.43 L147.16 137.77 L148.88 137.68 Z M533.65 137.63 L535.02 137.15 L536.54 136.23 L537.97 135.01 L539.53 133.35 L543.80 128.13 L546.95 123.99 L555.46 111.04 L559.37 105.76 L561.83 102.94 L564.23 100.54 L566.79 98.35 L569.51 96.42 L572.39 94.78 L575.70 93.36 L579.19 92.29 L582.81 91.55 L587.16 91.04 L591.92 90.86 L596.41 90.96 L604.59 91.44 L606.01 91.18 L606.51 90.86 L606.82 90.38 L606.97 89.50 L606.88 88.41 L605.95 85.03 L587.97 33.55 L581.79 15.15 L580.46 11.65 L579.15 8.78 L578.20 7.39 L577.28 6.80 L576.33 6.86 L575.43 7.59 L574.57 8.77 L573.09 11.31 L564.36 26.99 L547.50 58.45 L535.48 79.90 L532.03 86.47 L529.09 92.58 L526.67 98.22 L524.77 103.40 L523.69 106.91 L522.87 110.18 L522.30 113.19 L521.92 116.25 L521.74 119.36 L521.80 122.53 L522.07 125.40 L522.55 127.92 L523.31 130.35 L524.24 132.34 L525.45 134.18 L526.72 135.56 L528.20 136.67 L529.86 137.42 L531.62 137.77 L533.37 137.69 Z M289.15 91.96 L291.07 91.09 L293.24 89.71 L301.12 83.34 L305.59 80.19 L310.15 77.37 L325.31 68.55 L329.91 65.63 L333.83 62.90 L338.16 59.54 L342.00 56.11 L345.32 52.67 L348.31 48.99 L350.03 46.50 L351.57 43.90 L352.91 41.21 L353.91 38.72 L354.73 36.17 L355.34 33.55 L355.73 30.88 L355.87 28.17 L355.75 25.44 L355.42 23.05 L354.77 20.33 L353.95 18.03 L352.92 15.87 L351.65 13.90 L350.16 12.17 L348.70 10.93 L347.35 10.08 L345.91 9.38 L342.77 8.40 L339.03 7.80 L334.07 7.51 L325.66 7.44 L304.71 7.62 L291.20 7.25 L289.89 7.39 L288.73 7.75 L287.75 8.39 L286.98 9.25 L286.40 10.27 L285.92 11.72 L285.58 15.02 L285.94 33.05 L285.79 55.78 L285.91 76.63 L285.67 89.30 L285.86 91.00 L286.32 91.90 L286.67 92.15 L287.31 92.31 L288.88 92.05 Z M50.60 146.22 L43.69 145.72 L35.89 144.83 L34.04 144.39 L25.32 141.05 L20.54 138.77 L17.96 137.22 L15.79 135.68 L13.76 133.98 L12.14 132.36 L10.67 130.60 L9.56 128.99 L8.42 127.01 L7.29 124.64 L6.08 121.60 L4.95 118.25 L4.30 115.79 L3.85 113.29 L3.66 111.04 L3.67 109.05 L3.88 107.00 L4.29 104.97 L4.89 103.01 L5.56 101.51 L6.55 99.90 L7.55 98.79 L8.71 97.92 L9.77 97.39 L11.28 96.92 L13.02 96.67 L15.31 96.62 L17.87 96.87 L19.61 97.28 L20.48 97.82 L20.63 98.35 L20.55 98.81 L19.44 101.59 L18.92 103.56 L18.45 107.87 L18.40 110.86 L18.54 113.49 L18.91 116.42 L19.44 118.98 L20.07 121.18 L20.99 123.63 L22.11 126.00 L23.42 128.28 L24.90 130.44 L26.33 132.23 L28.13 134.15 L29.82 135.69 L32.97 138.04 L36.38 140.02 L40.29 141.77 L44.64 143.26 L49.03 144.40 L53.37 145.21 L56.33 145.43 L61.46 145.26 L62.88 145.45 L63.34 145.70 L62.75 146.00 L60.95 146.21 L50.93 146.22 Z";
 const LOGO_LINES = [[-699,96,2301,96],[-1466,154,1534,154],[-1642,145,1358,145],[-1640,6,1360,6],[4,-1227,4,1773],[8,-1626,8,1374],[271,-1641,271,1359],[460,-1640,460,1360],[286,-1640,286,1360],[203,-1131,1179,1706],[-331,-1559,647,1277],[52,-1556,1034,1279],[-201,-1132,782,1702],[41,-1559,1013,1279],[1370,-1461,-81,1165],[1149,-1034,-299,1593],[764,-1032,-684,1595],[754,-1038,-696,1589],[1389,-1470,-61,1156],[980,-1452,-468,1175],[1140,-1043,-309,1585]];
-const SartaMark = ({ height = 22, color = "currentColor", grid = false, gridFade = false, style = {} }) => {
+const SartaMark = ({ height = 22, color = "currentColor", grid = false, gridFade = false, lineColor, extendLines = 0, style = {} }) => {
   const [gone, setGone] = useState(false);
   useEffect(() => {
     if (!gridFade) return;
@@ -184,12 +188,25 @@ const SartaMark = ({ height = 22, color = "currentColor", grid = false, gridFade
   }, [gridFade]);
   return (
     <svg
-      viewBox={grid ? "-85 -55 814 272" : "0 0 644 159"}
-      height={height} style={{ display: "block", ...style }} role="img" aria-label="Sarta"
+      viewBox={grid ? `-85 -55 814 ${272 + extendLines}` : "0 -2 648 165"}
+      height={extendLines ? height * (272 + extendLines) / 272 : height} style={{ display: "block", overflow: "visible", ...style }} role="img" aria-label="Sarta"
     >
+      {grid && extendLines > 0 && (
+        <>
+          <defs>
+            <linearGradient id="sartaVFade" gradientUnits="userSpaceOnUse" x1="0" y1="217" x2="0" y2={207 + extendLines}>
+              <stop offset="0%" stopColor={lineColor || color} stopOpacity="0.75" />
+              <stop offset="100%" stopColor={lineColor || color} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {LOGO_LINES.filter(([a, , c]) => a === c).map(([x1, y1, x2, y2], i) => (
+            <line key={"ext" + i} x1={x1} y1={Math.max(y1, y2)} x2={x1} y2={207 + extendLines} stroke="url(#sartaVFade)" strokeWidth="1.5" />
+          ))}
+        </>
+      )}
       {grid && LOGO_LINES.map(([x1, y1, x2, y2], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.1"
-          style={{ opacity: gridFade && gone ? 0 : 0.45, transition: "opacity 4s ease" }} />
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={lineColor || color} strokeWidth="1.5"
+          style={{ opacity: gridFade && gone ? 0 : 0.75, transition: "opacity 4s ease" }} />
       ))}
       <path d={LOGO_D} fill={color} fillRule="nonzero" shapeRendering="geometricPrecision" />
     </svg>
@@ -766,37 +783,60 @@ export default function SartaAppV4() {
       <FloatNav scrollTo={scrollTo} />
 
       {/* Hero — waabi layout on cream */}
-      <section className="hero" style={{ position: "relative", minHeight: "96vh", display: "flex", alignItems: "flex-end", overflow: "hidden", background: C.cream }}>
-        <div style={{ position: "relative", width: "100%", maxWidth: 1360, margin: "0 auto", padding: "140px 26px 90px" }}>
-          <h1 className="herotag" style={{ fontFamily: F.serif, fontWeight: 300, fontSize: "clamp(52px, 9.4vw, 140px)", lineHeight: 1.04, letterSpacing: "-0.012em", color: C.text, margin: "0 0 34px", maxWidth: 1080 }}>
+      <section className="hero" style={{ position: "relative", display: "flex", alignItems: "flex-end", overflow: "hidden", background: C.cream }}>
+        <div style={{ position: "relative", width: "100%", maxWidth: 1360, margin: "0 auto", padding: "clamp(104px,11vw,150px) 26px 44px" }}>
+          <div style={{ display: "inline-block", overflow: "hidden", paddingBottom: 6 }}>
+            <div className="bpmark rise" style={{ display: "flex", justifyContent: "center", marginBottom: "clamp(18px,2.4vw,28px)" }}>
+              <SartaMark grid extendLines={70} height={170} color={C.burgundy} lineColor={C.glacierDeep} />
+            </div>
+          <div style={{ position: "relative" }}>
+            <div aria-hidden="true" style={{ position: "absolute", inset: "-70px -160px", background: "radial-gradient(50% 50% at 50% 50%, rgba(255,254,249,1) 0%, rgba(252,248,239,0.85) 38%, rgba(248,243,231,0.5) 58%, rgba(244,239,230,0) 78%)", borderRadius: "50%", pointerEvents: "none" }} />
+            <h1 className="herotag" style={{ position: "relative", fontFamily: F.serif, fontWeight: 300, fontSize: "clamp(26px, 3.9vw, 50px)", lineHeight: 1.08, letterSpacing: "-0.012em", color: C.text, margin: "0 0 24px", textAlign: "center" }}>
             <LineReveal lines={[
               <span key="a">A space for the</span>,
               <span key="b"><em style={{ fontStyle: "italic", color: C.burgundy }}>craft</em> to live.</span>,
             ]} />
           </h1>
-          <div className="rise heromono" style={{ animationDelay: ".35s", fontFamily: F.mono, fontSize: "clamp(13px,1.5vw,17px)", letterSpacing: "0.18em", textTransform: "uppercase", color: C.burgundy, marginBottom: 16 }}>
-            Built for makers
           </div>
-          <p className="rise heroblurb" style={{ animationDelay: ".5s", fontFamily: F.sans, fontSize: 15.5, fontWeight: 300, lineHeight: 1.8, color: C.grey, maxWidth: 560, margin: "0 0 34px" }}>
-            One operating system that brings together bookings, ticketing,
-            fittings, scheduling, payments, and client communication, giving
-            makers one place to run their business and more space for the
-            craft to live.
-          </p>
-          <div className="rise" style={{ animationDelay: ".65s", display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Btn primary onClick={() => scrollTo("access")} style={{ background: C.glacier, borderColor: C.glacier, color: C.text }}>Request Early Access</Btn>
-            <Btn onClick={() => window.open("https://sarta.studio", "_blank")} style={{ background: "transparent", borderColor: C.burgundy, color: C.burgundy, borderWidth: 1.5 }}>Visit Sarta Studio</Btn>
+          </div>
+          <div className="rise" style={{ animationDelay: ".4s", fontFamily: F.mono, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: C.grey, marginTop: 84 }}>
+            An app built for
+          </div>
+          <div className="herotriad" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(28px,4vw,56px)", marginTop: 26, maxWidth: 1020 }}>
+            {[
+              ["Makers", "Make more money when you join the network", "You\u2019re marketed and matched with clients \u2014 find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
+              ["Clients", "Book trusted makers for hems, repairs, and reimaginings", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
+              ["Stylists", "Manage wardrobes and send each item to the right maker", "Every piece, where it belongs.", C.grey, ".8s", () => scrollTo("network")],
+            ].map(([role, head, sub, accent, delay, act]) => (
+              <button key={role} className="rise" onClick={act} style={{ animationDelay: delay, display: "block", width: "100%", background: "transparent", border: "none", borderLeft: `2px solid ${accent}`, padding: "4px 0 4px 18px", cursor: "pointer", textAlign: "left" }}>
+                <span style={{ display: "block", fontFamily: F.mono, fontWeight: 700, fontSize: "clamp(13px,1.4vw,16px)", letterSpacing: "0.2em", textTransform: "uppercase", color: accent, marginBottom: 11 }}>
+                  {role}
+                </span>
+                <span style={{ display: "block", fontFamily: F.sans, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, lineHeight: 1.45, letterSpacing: "-0.01em", color: C.text, marginBottom: 9 }}>
+                  {head}
+                </span>
+                <span style={{ display: "block", fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, lineHeight: 1.65, color: C.grey }}>
+                  {sub}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
-        <button onClick={() => scrollTo("who")} aria-label="Scroll down" style={{
-          position: "absolute", right: 24, bottom: 24, width: 44, height: 44, borderRadius: "50%",
-          background: C.glacier, color: C.text, border: "none", cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, boxShadow: "0 6px 18px rgba(159,182,216,0.5)",
-        }}>↓</button>
       </section>
 
       {/* Statement — monogram field with panel */}
       <Reveal><section style={{ position: "relative", overflow: "hidden", padding: "clamp(70px,9vw,120px) 24px" }}>
+        <svg viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.6 }}>
+          {[
+            "M0,150 L1200,150", "M0,166 L1200,166",
+            "M0,398 L1200,398", "M0,414 L1200,414",
+            "M110,0 L110,560", "M370,0 L370,560", "M630,0 L630,560", "M890,0 L890,560", "M1150,0 L1150,560",
+            "M110,560 L370,0", "M370,0 L630,560", "M630,560 L890,0", "M890,0 L1150,560",
+            "M370,560 L630,0", "M630,0 L890,560",
+          ].map((d, i) => (
+            <path key={i} d={d} fill="none" stroke={C.glacierDeep} strokeWidth="1.3" opacity="0.55" />
+          ))}
+        </svg>
         {/* cream text panel */}
         <div style={{ position: "relative", maxWidth: 700, margin: "0 auto", background: C.cream, border: `1px solid ${C.glacierDeep}55`, padding: "clamp(38px,6vw,62px) clamp(24px,5vw,56px)", textAlign: "center" }}>
           <div aria-hidden="true" style={{ position: "absolute", inset: 12, border: `1px solid ${C.glacierDeep}33`, pointerEvents: "none" }} />
@@ -922,7 +962,7 @@ export default function SartaAppV4() {
         <div className="netgrid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(40px,6vw,80px)", alignItems: "center" }}>
           <div>
             <div style={{ fontFamily: F.mono, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: C.burgundy, marginBottom: 20 }}>
-              Overflow, handled
+              Find work when you want it
             </div>
             <h2 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(21px,2.7vw,31px)", letterSpacing: "0.1em", lineHeight: 1.35, color: C.burgundy, margin: "0 0 20px", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.35em" }}>
               <span>The</span>
@@ -957,11 +997,12 @@ export default function SartaAppV4() {
               Work enters from clients — a hem, a resole, a sofa cushion — and
               Sarta routes it to the right hands. Overflow and out-of-specialty
               pieces go to trusted makers, and the client relationship stays yours.
-              Stylists work the same threads, managing their clients’ items and
-              sending each piece where it belongs.
+              And when your bench is quiet, the network works the other way:
+              open your availability and take on work when you want it.
             </p>
             <div style={{ display: "grid", gap: 12, maxWidth: 440 }}>
               {[
+                "Use the Sarta network to find work when you want it",
                 "Clients bring work in — the network carries it to completion",
                 "Send overflow without losing the client",
                 "Stylists manage client wardrobes and send items for care",
