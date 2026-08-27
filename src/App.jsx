@@ -488,8 +488,8 @@ const Faq = ({ q, a }) => {
 
 const AUDIENCES = [
   { tone: "burgundy", title: "Makers", types: "Tailors · Cobblers · Leatherworkers · Reweavers · Embroiderers · Menders", desc: "The hands behind the work — every request, ticket, fitting, and payment in one queue." },
-  { tone: "glacier", title: "Stylists", types: "Personal Stylists · Wardrobe Consultants", desc: "Send client pieces to trusted makers and follow every item from request to ready." },
-  { tone: "red", title: "Designers", types: "Fashion Designers · Custom & Bridal Ateliers", desc: "Sampling, finishing, and production-quality alterations with specialists you trust." },
+  { tone: "glacier", title: "Stylists & Designers", types: "Personal Stylists · Wardrobe Consultants · Fashion Designers · Bridal Ateliers", desc: "Send client pieces and production work to trusted makers — and follow every item from request to ready." },
+  { tone: "red", title: "Clients", types: "Anyone with a closet · Pieces worth keeping", desc: "Book trusted makers, follow your projects, and bring what you already own back to life." },
   { tone: "grey", title: "Businesses", types: "Tailor Shops · Studios · Brands · Retailers", desc: "Teams, capacity, and routing — run the whole floor and every partner channel at once." },
 ];
 
@@ -804,8 +804,8 @@ export default function SartaAppV4() {
           </div>
           <div className="herotriad" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(28px,4vw,56px)", marginTop: 26, maxWidth: 1020 }}>
             {[
-              ["Makers", "Make more money when you join the network", "You\u2019re marketed and matched with clients \u2014 find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
-              ["Clients", "Book trusted makers for hems, repairs, and reimaginings", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
+              ["Makers", "Make more money when you join the network", "You\u2019re marketed and matched with clients — find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
+              ["Clients", "Book trusted makers for hems, repairs, and restyles", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
               ["Stylists", "Manage wardrobes and send each item to the right maker", "Every piece, where it belongs.", C.grey, ".8s", () => scrollTo("network")],
             ].map(([role, head, sub, accent, delay, act]) => (
               <button key={role} className="rise" onClick={act} style={{ animationDelay: delay, display: "block", width: "100%", background: "transparent", border: "none", borderLeft: `2px solid ${accent}`, padding: "4px 0 4px 18px", cursor: "pointer", textAlign: "left" }}>
