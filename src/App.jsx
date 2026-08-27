@@ -805,7 +805,7 @@ export default function SartaAppV4() {
           <div className="herotriad" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(28px,4vw,56px)", marginTop: 26, maxWidth: 1020 }}>
             {[
               ["Makers", "Make more money when you join the network", "You\u2019re marketed and matched with clients — find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
-              ["Clients", "Book trusted makers for hems, repairs, and restyles", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
+              ["Clients", "Book trusted makers for repairs, alterations, embroidery and more", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
               ["Stylists", "Manage wardrobes and send each item to the right maker", "Every piece, where it belongs.", C.grey, ".8s", () => scrollTo("network")],
             ].map(([role, head, sub, accent, delay, act]) => (
               <button key={role} className="rise" onClick={act} style={{ animationDelay: delay, display: "block", width: "100%", background: "transparent", border: "none", borderLeft: `2px solid ${accent}`, padding: "4px 0 4px 18px", cursor: "pointer", textAlign: "left" }}>
