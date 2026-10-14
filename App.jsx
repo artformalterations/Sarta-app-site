@@ -666,11 +666,11 @@ const LEGAL = {
     title: "Privacy Policy",
     updated: "Last updated: October 14, 2026",
     body: [
-      ["p", "Sarta is operated by Artform Alterations LLC, doing business as Sarta (\u201CSarta,\u201D \u201Cwe,\u201D \u201Cus\u201D). This policy explains what information we collect through sarta.app and sarta.studio, how we use it, how we protect it, and the choices you have. By using our sites, you agree to this policy."],
+      ["p", "Sarta is operated by Artform Alterations LLC, doing business as Sarta (\u201CSarta,\u201D \u201Cwe,\u201D \u201Cus\u201D). This policy explains what information we collect through our websites (sarta.app and sarta.studio) and the Sarta mobile app, how we use it, how we protect it, and the choices you have. By using our sites or app, you agree to this policy."],
       ["h", "Information we collect"],
       ["p", "Information you give us. When you request early access, book a fitting, or contact us, we collect what you provide: your name, email address, phone number, and the details of your request or your items. We do not collect payment information through these sites today."],
       ["p", "Information collected automatically. Our hosting providers keep standard server logs \u2014 such as IP address, browser type, and pages visited \u2014 to keep the sites running and secure. We do not run third-party advertising or tracking cookies."],
-      ["p", "As the Sarta platform launches. Accounts, bookings, orders, and payments will involve additional information, including order details and payment data handled by a dedicated payment processor. We will update this policy before those features go live."],
+      ["p", "If you use the Sarta app. Creating an account adds information such as your name, email, phone number, and business details, along with the content you create in the app — projects and orders, item photos and measurements, notes, schedules, and messages between clients, stylists, and makers. Where payments are offered, payment details are handled by a dedicated payment processor; we do not store full card numbers."],
       ["h", "How we use your information"],
       ["p", "We use your information to respond to you, provide early access and product updates, schedule and manage fittings and projects, operate and improve Sarta, and send service communications about requests you\u2019ve made. We send promotional messages only with your consent, and every one includes a way to opt out. We do not sell your personal information."],
       ["h", "Calls and texts"],
