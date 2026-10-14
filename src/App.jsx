@@ -664,25 +664,33 @@ const MonogramBand = () => (
 const LEGAL = {
   privacy: {
     title: "Privacy Policy",
-    updated: "Last updated: August 17, 2026",
+    updated: "Last updated: October 14, 2026",
     body: [
-      ["p", "Sarta is operated by Artform Alterations LLC (“Sarta,” “we,” “us”). This policy explains what information we collect through sarta.app and sarta.studio, how we use it, and the choices you have."],
-      ["h", "What we collect"],
-      ["p", "When you request early access or contact us, we collect the information you provide: your name, email address, phone number, and what you’re interested in. When you send a booking inquiry on sarta.studio, we collect the details you include about yourself and your items. We do not collect payment information through these sites."],
-      ["h", "How we use it"],
-      ["p", "We use your information to respond to you, provide early access and product updates, operate and improve Sarta, and communicate about services you’ve requested. We do not sell your personal information."],
-      ["h", "Where it lives"],
-      ["p", "Form submissions are processed by Formspree and delivered to our email. Our sites are hosted on Vercel with code stored on GitHub. These providers process data on our behalf under their own security practices."],
-      ["h", "Sharing"],
-      ["p", "We share information only with the service providers above as needed to run the sites, or if required by law. We do not sell or rent your information to anyone."],
-      ["h", "Cookies & analytics"],
-      ["p", "Our sites do not set tracking cookies or run third-party advertising. If we add analytics in the future, we will update this policy."],
-      ["h", "Your choices"],
-      ["p", "You can unsubscribe from our emails at any time using the link in the email or by writing to us. You can also ask us what information we hold about you, or ask us to correct or delete it, by emailing mattie@artformalterations.com. We’ll respond promptly."],
-      ["h", "Retention & children"],
-      ["p", "We keep your information only as long as needed for the purposes above. Our sites are not directed to children under 13, and we do not knowingly collect their information."],
-      ["h", "Changes & contact"],
-      ["p", "If this policy changes, we’ll post the new version here with an updated date. Questions? Email mattie@artformalterations.com."],
+      ["p", "Sarta is operated by Artform Alterations LLC, doing business as Sarta (\u201CSarta,\u201D \u201Cwe,\u201D \u201Cus\u201D). This policy explains what information we collect through our websites (sarta.app and sarta.studio) and the Sarta mobile app, how we use it, how we protect it, and the choices you have. By using our sites or app, you agree to this policy."],
+      ["h", "Information we collect"],
+      ["p", "Information you give us. When you request early access, book a fitting, or contact us, we collect what you provide: your name, email address, phone number, and the details of your request or your items. We do not collect payment information through these sites today."],
+      ["p", "Information collected automatically. Our hosting providers keep standard server logs \u2014 such as IP address, browser type, and pages visited \u2014 to keep the sites running and secure. We do not run third-party advertising or tracking cookies."],
+      ["p", "If you use the Sarta app. Creating an account adds information such as your name, email, phone number, and business details, along with the content you create in the app — projects and orders, item photos and measurements, notes, schedules, and messages between clients, stylists, and makers. Where payments are offered, payment details are handled by a dedicated payment processor; we do not store full card numbers."],
+      ["h", "How we use your information"],
+      ["p", "We use your information to respond to you, provide early access and product updates, schedule and manage fittings and projects, operate and improve Sarta, and send service communications about requests you\u2019ve made. We send promotional messages only with your consent, and every one includes a way to opt out. We do not sell your personal information."],
+      ["h", "Calls and texts"],
+      ["p", "If you share your phone number, you agree that we may call or text you about your request, booking, or account. Message and data rates may apply. You can opt out of texts at any time by replying STOP."],
+      ["h", "Sharing and disclosure"],
+      ["p", "We never sell or rent your personal information. We share it only with the service providers who run our sites \u2014 form processing by Formspree, hosting by Vercel, and code storage on GitHub \u2014 who process data on our behalf under their own security practices. We may also disclose information if required by law, or transfer it as part of a merger, acquisition, or sale of the business, in which case this policy will continue to apply."],
+      ["h", "Your choices and rights"],
+      ["p", "You can unsubscribe from our emails at any time using the link in the email or by writing to us. You can also ask us what information we hold about you, or ask us to correct or delete it, by emailing mattie@artformalterations.com. We\u2019ll respond promptly, though we may retain some information where the law requires it or we need it to operate. If your state\u2019s privacy law gives you additional rights, we will honor them."],
+      ["h", "Data retention"],
+      ["p", "We keep your information only as long as needed for the purposes described above, or as required by law, and then delete or de-identify it."],
+      ["h", "Security"],
+      ["p", "We use reasonable safeguards to protect your information, and our providers maintain their own security programs. No method of transmission or storage is completely secure, but we work to protect what you share with us."],
+      ["h", "Where your data lives"],
+      ["p", "Sarta operates from the United States, and your information is processed and stored in the US. If you use our sites from elsewhere, you understand your information will be handled under this policy and US law."],
+      ["h", "Children\u2019s privacy"],
+      ["p", "Our sites are not directed to children under 13, and we do not knowingly collect their information. If we learn we have, we will delete it."],
+      ["h", "Changes to this policy"],
+      ["p", "If this policy changes, we\u2019ll post the new version here with an updated date, and we\u2019ll flag significant changes on this page."],
+      ["h", "Contact us"],
+      ["p", "Artform Alterations LLC, d/b/a Sarta \u00b7 Chicago, Illinois. Questions or requests? Email mattie@artformalterations.com."],
     ],
   },
   terms: {
@@ -748,6 +756,22 @@ export default function SartaAppV4() {
     m.setAttribute("content", "width=device-width, initial-scale=1");
   }, []);
   const [legal, setLegal] = useState(null);
+  const legalPath = { privacy: "/privacypolicy", terms: "/terms" };
+  const setPath = (p) => { try { window.history.pushState({}, "", p); } catch (e) {} };
+  const openLegal = (page) => { setLegal(page); setPath(legalPath[page]); };
+  const closeLegal = () => { setLegal(null); setPath("/"); };
+  useEffect(() => {
+    const fromPath = () => {
+      let p = "";
+      try { p = window.location.pathname.toLowerCase(); } catch (e) {}
+      if (p.includes("privacy")) setLegal("privacy");
+      else if (p.includes("terms")) setLegal("terms");
+      else setLegal(null);
+    };
+    fromPath();
+    window.addEventListener("popstate", fromPath);
+    return () => window.removeEventListener("popstate", fromPath);
+  }, []);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -804,7 +828,7 @@ export default function SartaAppV4() {
           </div>
           <div className="herotriad" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(28px,4vw,56px)", marginTop: 26, maxWidth: 1020 }}>
             {[
-              ["Makers", "Make more money when you join the network", "You\u2019re marketed and matched with clients — find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
+              ["Makers", "Make more money when you join the network", "You’re marketed and matched with clients — find work when you want it.", C.burgundy, ".5s", () => scrollTo("network")],
               ["Clients", "Book trusted makers for repairs, alterations, embroidery and more", "Bring what you own back to life.", C.glacierDeep, ".65s", () => window.open("https://sarta.studio", "_blank")],
               ["Stylists", "Manage wardrobes and send each item to the right maker", "Every piece, where it belongs.", C.grey, ".8s", () => scrollTo("network")],
             ].map(([role, head, sub, accent, delay, act]) => (
@@ -1082,7 +1106,7 @@ export default function SartaAppV4() {
           Why Sarta
         </div>
         <h2 style={{ fontFamily: F.sans, fontWeight: 300, fontSize: "clamp(24px,3.2vw,38px)", letterSpacing: "-0.01em", lineHeight: 1.4, color: C.grey, margin: "0 0 54px", maxWidth: 620 }}>
-          <LineReveal lines={["Sarta exists to create a more", "thoughtful relationship between", "people, the objects they own, and", "the makers behind them."]} />
+          <LineReveal lines={["Connecting people, their objects,", "and the makers behind them."]} />
         </h2>
         <div className="founderrow" style={{ display: "grid", gridTemplateColumns: "minmax(240px, 330px) 1fr", gap: "clamp(34px,5vw,60px)", alignItems: "start" }}>
         <div style={{ position: "relative", width: "100%", maxWidth: 340, margin: "0 auto", overflow: "hidden", borderRadius: 18, border: `1px solid ${C.line}` }}>
@@ -1154,6 +1178,13 @@ export default function SartaAppV4() {
                     <div style={{ marginTop: 22, display: "flex", justifyContent: "center" }}>
                       <Btn primary onClick={requestAccess} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy, opacity: sending || !formReady ? 0.55 : 1, pointerEvents: sending ? "none" : "auto" }}>{sending ? "Sending…" : "Request Access"}</Btn>
                     </div>
+                    <div style={{ marginTop: 16, fontFamily: F.sans, fontSize: 12, fontWeight: 300, lineHeight: 1.6, color: "rgba(244,239,230,0.65)" }}>
+                      By requesting access, you agree to our{" "}
+                      <button onClick={() => openLegal("privacy")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", color: "#F8F3E7", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                        Privacy Policy
+                      </button>
+                      . We’ll only use your details to reach you about Sarta — never sold, never shared.
+                    </div>
                   </>
                 );
               })()}
@@ -1184,13 +1215,13 @@ export default function SartaAppV4() {
             Book a Fitting → sarta.studio
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
-            <button onClick={() => setLegal("privacy")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Privacy Policy</button>
-            <button onClick={() => setLegal("terms")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Terms of Service</button>
+            <button onClick={() => openLegal("privacy")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Privacy Policy</button>
+            <button onClick={() => openLegal("terms")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Terms of Service</button>
             <span style={{ fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey }}>© 2026 Artform Alterations LLC</span>
           </div>
         </div>
       </footer>
-      {legal && <LegalPage page={legal} onClose={() => setLegal(null)} />}
+      {legal && <LegalPage page={legal} onClose={closeLegal} />}
     </div>
   );
 }
