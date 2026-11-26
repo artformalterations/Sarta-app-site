@@ -152,6 +152,12 @@ const GlobalStyle = () => (
       .side { gap: 26px; }
       .g4m2 { grid-template-columns: 1fr; }
       .accgrid { grid-template-columns: 1fr !important; }
+      .careergrid { grid-template-columns: 1fr !important; }
+      .careerrow { grid-template-columns: 1fr !important; gap: 4px !important; }
+      .careers h1 { font-size: 27px !important; letter-spacing: 0.04em !important; }
+      .careers h2 { font-size: 11.5px !important; margin-bottom: 18px !important; }
+      .careers p.careers-tag { font-size: 16px !important; line-height: 1.5 !important; }
+      .careers h2.careers-apply { font-size: 24px !important; margin-bottom: 14px !important; }
       .founderrow { grid-template-columns: 1fr !important; }
       .netgrid { grid-template-columns: 1fr !important; }
       .showgrid { grid-template-columns: 1fr !important; }
@@ -560,7 +566,7 @@ const Drift = ({ children, h = 380, speed = 0.1, radius = 14, style = {} }) => {
   );
 };
 
-const FloatNav = ({ scrollTo }) => {
+const FloatNav = ({ scrollTo, onCareers }) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState({ label: "Home", id: null });
   const E = "cubic-bezier(.16,1,.3,1)";
@@ -624,7 +630,7 @@ const FloatNav = ({ scrollTo }) => {
             </button>
           </div>
           <div style={{
-            maxHeight: open ? 440 : 0,
+            maxHeight: open ? 500 : 0,
             opacity: open ? 1 : 0,
             transition: `max-height .65s ${E}, opacity .45s ${E} ${open ? ".05s" : "0s"}`,
           }}>
@@ -639,6 +645,10 @@ const FloatNav = ({ scrollTo }) => {
                 <span style={{ display: "flex", flexShrink: 0 }}><CapIcon name="fittings" size={17} /></span>
                 Book a Fitting → Sarta Studio
               </a>
+              <button onClick={() => { setOpen(false); onCareers && onCareers(); }} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "13px 0 4px", fontFamily: F.sans, fontSize: 15, color: C.text, ...item(links.length + 1) }}>
+                <span style={{ color: C.burgundy, display: "flex", flexShrink: 0 }}><CapIcon name="team" size={17} /></span>
+                Careers <span style={{ fontFamily: F.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: C.cream, background: C.burgundy, borderRadius: 100, padding: "3px 8px", marginLeft: 2 }}>Hiring</span>
+              </button>
             </div>
           </div>
         </div>
@@ -749,6 +759,240 @@ const LegalPage = ({ page, onClose }) => {
   );
 };
 
+/* ── Careers: open roles at /careers ── */
+const JOB = {
+  title: "Social Media & Editorial Creative",
+  slug: "editorial-creative",
+  meta: ["Part-time", "8–10 hrs / week", "$30 / hour", "Flexible schedule"],
+  pillars: [
+    ["01", "Makers", "A space for makers to showcase their craftsmanship, specialties, techniques and the work they love to do — celebrating the people behind the craft and bringing visibility to their talent."],
+    ["02", "Clients", "Helping people better understand their bodies, proportions and personal style — and showing how small transformations to what they already own can change how they look, feel and move through the world."],
+    ["03", "Stylists", "The intersection of styling and craftsmanship: different creative perspectives, styling formulas and new ways to reimagine what we already own."],
+    ["04", "The power of fit", "Clothing as the architecture closest to the body — drawing on geometry, proportion, psychology, sensory perception and design to understand our relationship with what we wear."],
+  ],
+  duties: [
+    "Collaborate on creative direction and content strategy.",
+    "Research interesting topics, cultural references and design concepts.",
+    "Develop a monthly editorial content calendar.",
+    "Create 2–3 posts or reels per week.",
+    "Interview and document makers and stylists.",
+    "Showcase before-and-after transformations and the power of fit.",
+    "Create educational content and introduce Sarta’s app features in an organic way.",
+    "Film, edit, write copy and publish.",
+    "Identify interesting people, brands and potential creative collaborations.",
+    "Monitor engagement and understand what resonates with our audience.",
+  ],
+  details: [
+    ["Hours", "Part-time, approximately 8–10 hours per week"],
+    ["Rate", "$30 / hour"],
+    ["Schedule", "Flexible"],
+    ["Start", "Initial paid one-month trial"],
+    ["Growth", "Opportunity for the role to evolve as Sarta grows"],
+  ],
+};
+
+const CareersPage = ({ onClose }) => {
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
+  useEffect(() => {
+    const prev = document.title;
+    document.title = `${JOB.title} — Careers at Sarta`;
+    return () => { document.title = prev; };
+  }, []);
+  const shareUrl = `https://www.sarta.app/careers/${JOB.slug}`;
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const data = { title: `${JOB.title} — Sarta`, text: "Sarta is hiring a part-time Social Media & Editorial Creative.", url: shareUrl };
+    try {
+      if (navigator.share) { await navigator.share(data); return; }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    try { await navigator.clipboard.writeText(shareUrl); } catch (e) {
+      const t = document.createElement("textarea"); t.value = shareUrl; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); } catch (_) {} document.body.removeChild(t);
+    }
+    setCopied(true); setTimeout(() => setCopied(false), 2200);
+  };
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [link, setLink] = useState("");
+  const [note, setNote] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [err, setErr] = useState(false);
+  const ready = name.trim() && email.includes("@") && link.trim();
+  const apply = async () => {
+    if (!ready || sending) return;
+    setSending(true); setErr(false);
+    try {
+      const r = await fetch("https://formspree.io/f/xppaangy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          "Name": name.trim(),
+          email,
+          "Portfolio / Instagram": link.trim(),
+          "Note": note.trim(),
+          role: JOB.title,
+          source: "sarta.app careers",
+          _subject: `Application — ${JOB.title}`,
+        }),
+      });
+      if (r.ok) setSent(true); else setErr(true);
+    } catch (e) { setErr(true); }
+    setSending(false);
+  };
+  const h2 = { fontFamily: F.mono, fontWeight: 400, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: C.burgundy, margin: "0 0 18px" };
+  const body = { fontFamily: F.mono, fontSize: 13.5, fontWeight: 400, lineHeight: 1.85, color: C.grey, margin: "0 0 16px" };
+  const field = { fontFamily: F.mono, fontSize: 14.5, padding: "14px 18px", border: `1px solid ${C.line}`, borderRadius: 100, background: "#FBF8F2", color: C.ink, width: "100%", boxSizing: "border-box" };
+  return (
+    <div className="careers" style={{ position: "fixed", inset: 0, zIndex: 200, background: C.cream, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+      <button onClick={onClose} aria-label="Close" style={{ position: "fixed", top: 18, right: 18, zIndex: 2, width: 44, height: 44, borderRadius: "50%", border: `1px solid ${C.line}`, background: "#F8F3E7", color: C.burgundy, fontSize: 18, cursor: "pointer" }}>✕</button>
+
+      {/* Header */}
+      <div style={{ maxWidth: 820, margin: "0 auto", padding: "90px 24px 0" }}>
+        <div style={{ marginBottom: 34 }}><SartaMark height={20} color={C.burgundy} /></div>
+        <Eyebrow color={C.burgundy} style={{ marginBottom: 18 }}>Careers · Open role</Eyebrow>
+        <h1 style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(28px,4.4vw,46px)", lineHeight: 1.2, letterSpacing: "0.04em", color: C.text, margin: "0 0 26px" }}>
+          Social Media &amp;<br />Editorial Creative
+        </h1>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 40 }}>
+          {JOB.meta.map((m) => (
+            <span key={m} style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: "0.12em", textTransform: "uppercase", color: C.text, border: `1px solid ${C.line}`, borderRadius: 100, padding: "8px 14px" }}>{m}</span>
+          ))}
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 18, margin: "-14px 0 40px" }}>
+          <Btn primary small onClick={() => document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" })}>Apply</Btn>
+          <TextLink onClick={share}>{copied ? "Link copied ✓" : "Share this role ↗"}</TextLink>
+        </div>
+        <Stitch />
+      </div>
+
+      {/* About */}
+      <div style={{ maxWidth: 820, margin: "0 auto", padding: "56px 24px 0" }}>
+        <p className="careers-tag" style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(17px,2vw,20px)", letterSpacing: "0.04em", lineHeight: 1.5, color: C.text, margin: "0 0 28px" }}>
+          A space for the craft to live.
+        </p>
+        <p style={body}>
+          Sarta is an app designed for makers, stylists and their clients — bringing tailoring, alterations,
+          repair, styling and wardrobe management together in one digital space.
+        </p>
+        <p style={body}>
+          We want Sarta’s social presence to feel editorial, thoughtful and design-driven: an exploration of
+          the relationship between the things we wear, how they fit, and how they shape the way we experience
+          ourselves. Rather than simply promoting an app, Sarta should become a destination for discovery,
+          education and creative exchange — where craftsmanship is celebrated, knowledge is shared, and people
+          are inspired to approach their wardrobes differently.
+        </p>
+        <p style={body}>
+          Think of something you’d discover in a contemporary design museum’s bookshop: intellectually curious,
+          visually compelling and culturally relevant — without feeling pretentious or overly polished.
+        </p>
+      </div>
+
+      {/* Pillars */}
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "56px 24px 0" }}>
+        <div style={{ maxWidth: 772, margin: "0 auto" }}><h2 style={h2}>Four perspectives</h2></div>
+        <div className="careergrid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }}>
+          {JOB.pillars.map(([n, t, d], i) => {
+            const dark = i === 3;
+            return (
+              <div key={n} style={{ position: "relative", overflow: "hidden", borderRadius: 18, padding: "28px 26px 30px", background: dark ? C.burgundy : i === 1 ? C.glacier : "#FBF8F2", border: dark ? "none" : `1px solid ${C.line}` }}>
+                {dark && <Grain opacity={0.35} />}
+                <div style={{ position: "relative" }}>
+                  <div style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: "0.2em", color: dark ? C.glacier : C.burgundy, marginBottom: 16 }}>{n}</div>
+                  <div style={{ fontFamily: F.mono, fontSize: 19, letterSpacing: "0.04em", lineHeight: 1.25, color: dark ? "#F8F3E7" : C.text, marginBottom: 12 }}>{t}</div>
+                  <div style={{ fontFamily: F.mono, fontSize: 14, fontWeight: 300, lineHeight: 1.75, color: dark ? "rgba(244,239,230,0.8)" : i === 1 ? C.text : C.grey }}>{d}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* The role */}
+      <div style={{ maxWidth: 820, margin: "0 auto", padding: "64px 24px 0" }}>
+        <h2 style={h2}>The role</h2>
+        <p style={body}>
+          We’re looking for someone who can help translate this vision into content and build a cohesive
+          social presence for Sarta.
+        </p>
+        <ol style={{ listStyle: "none", padding: 0, margin: "26px 0 30px" }}>
+          {JOB.duties.map((d, i) => (
+            <li key={i} style={{ display: "grid", gridTemplateColumns: "44px 1fr", alignItems: "baseline", padding: "14px 0", borderBottom: `1px dashed ${C.line}` }}>
+              <span style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: "0.14em", color: C.burgundy }}>{String(i + 1).padStart(2, "0")}</span>
+              <span style={{ fontFamily: F.mono, fontSize: 15, fontWeight: 300, lineHeight: 1.6, color: C.ink }}>{d}</span>
+            </li>
+          ))}
+        </ol>
+        <p style={body}>
+          This is meant to be a collaborative creative relationship — with room to experiment, bring new ideas
+          to the table, and help shape Sarta’s identity as it grows.
+        </p>
+      </div>
+
+      {/* Details */}
+      <div style={{ maxWidth: 820, margin: "0 auto", padding: "48px 24px 0" }}>
+        <h2 style={h2}>Work details</h2>
+        <div style={{ border: `1px solid ${C.line}`, borderRadius: 18, overflow: "hidden", background: "#FBF8F2" }}>
+          {JOB.details.map(([k, v], i) => (
+            <div key={k} className="careerrow" style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 12, padding: "16px 22px", borderTop: i ? `1px solid ${C.line}` : "none" }}>
+              <span style={{ fontFamily: F.mono, fontSize: 10.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, paddingTop: 3 }}>{k}</span>
+              <span style={{ fontFamily: F.mono, fontSize: 15, fontWeight: 400, color: C.text }}>{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Apply */}
+      <div id="apply" style={{ marginTop: 72, background: C.burgundy, position: "relative", overflow: "hidden" }}>
+        <Grain opacity={0.3} />
+        <div style={{ position: "relative", maxWidth: 620, margin: "0 auto", padding: "90px 24px 100px", textAlign: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}><SartaMonogram height={48} color="#F8F3E7" /></div>
+          <h2 className="careers-apply" style={{ fontFamily: F.mono, fontWeight: 400, fontSize: "clamp(24px,3vw,32px)", letterSpacing: "0.1em", lineHeight: 1.2, color: "#F8F3E7", margin: "0 0 14px" }}>Apply</h2>
+          <p style={{ fontFamily: F.mono, fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: "rgba(244,239,230,0.75)", margin: "0 0 32px" }}>
+            Share a portfolio or the account you’re proudest of, and tell us a topic you’d love to explore for Sarta.
+          </p>
+          {sent ? (
+            <div style={{ fontFamily: F.mono, fontSize: 14, letterSpacing: "0.06em", color: C.glacier }}>Thank you — we’ll be in touch soon.</div>
+          ) : (
+            <div style={{ display: "grid", gap: 10, textAlign: "left" }}>
+              {(() => {
+                const f = { ...field, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(244,239,230,0.35)", color: C.cream };
+                return (
+                  <>
+                    <div className="accgrid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Full name" style={f} />
+                      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" inputMode="email" autoComplete="email" placeholder="Email" style={f} />
+                    </div>
+                    <input value={link} onChange={(e) => setLink(e.target.value)} inputMode="url" placeholder="Portfolio, reel or Instagram link" style={f} />
+                    <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={5} placeholder="A short note — and a topic you’d love to explore for Sarta" style={{ ...f, borderRadius: 20, resize: "vertical", lineHeight: 1.6 }} />
+                    <div style={{ marginTop: 14, display: "flex", justifyContent: "center" }}>
+                      <Btn primary onClick={apply} style={{ background: "#F8F3E7", borderColor: "#F8F3E7", color: C.burgundy, opacity: sending || !ready ? 0.55 : 1, pointerEvents: sending ? "none" : "auto" }}>{sending ? "Sending…" : "Send Application"}</Btn>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          )}
+          {err && !sent && (
+            <div style={{ marginTop: 16, fontFamily: F.mono, fontSize: 13, color: C.glacier }}>
+              That didn’t go through — please try again, or email <a href="mailto:mattie@artformalterations.com?subject=Social%20Media%20%26%20Editorial%20Creative" style={{ color: C.glacier, textDecoration: "underline", textUnderlineOffset: 3 }}>mattie@artformalterations.com</a>.
+            </div>
+          )}
+          <div style={{ marginTop: 30, fontFamily: F.mono, fontSize: 12.5, fontWeight: 300, color: "rgba(244,239,230,0.6)" }}>
+            Prefer email? <a href="mailto:mattie@artformalterations.com?subject=Social%20Media%20%26%20Editorial%20Creative" style={{ color: "#F8F3E7", textDecoration: "underline", textUnderlineOffset: 3 }}>mattie@artformalterations.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ textAlign: "center", padding: "40px 24px 60px" }}>
+        <button onClick={onClose} style={{ fontFamily: F.mono, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", padding: "13px 22px", borderRadius: 100, border: `1px solid ${C.burgundy}`, background: "transparent", color: C.burgundy, cursor: "pointer" }}>
+          ← Back to Sarta
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function SartaAppV4() {
   useEffect(() => {
     let m = document.querySelector('meta[name="viewport"]');
@@ -760,6 +1004,9 @@ export default function SartaAppV4() {
   const setPath = (p) => { try { window.history.pushState({}, "", p); } catch (e) {} };
   const openLegal = (page) => { setLegal(page); setPath(legalPath[page]); };
   const closeLegal = () => { setLegal(null); setPath("/"); };
+  const [careers, setCareers] = useState(false);
+  const openCareers = () => { setCareers(true); setPath("/careers/" + JOB.slug); };
+  const closeCareers = () => { setCareers(false); setPath("/"); };
   useEffect(() => {
     const fromPath = () => {
       let p = "";
@@ -767,6 +1014,7 @@ export default function SartaAppV4() {
       if (p.includes("privacy")) setLegal("privacy");
       else if (p.includes("terms")) setLegal("terms");
       else setLegal(null);
+      setCareers(p.includes("careers") || p.includes("jobs"));
     };
     fromPath();
     window.addEventListener("popstate", fromPath);
@@ -804,7 +1052,7 @@ export default function SartaAppV4() {
   return (
     <div style={{ background: C.cream, minHeight: "100vh", color: C.text }}>
       <GlobalStyle />
-      <FloatNav scrollTo={scrollTo} />
+      <FloatNav scrollTo={scrollTo} onCareers={openCareers} />
 
       {/* Hero — waabi layout on cream */}
       <section className="hero" style={{ position: "relative", display: "flex", alignItems: "flex-end", overflow: "hidden", background: C.cream }}>
@@ -1215,6 +1463,7 @@ export default function SartaAppV4() {
             Book a Fitting → sarta.studio
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+            <button onClick={openCareers} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.burgundy, textDecoration: "underline", textUnderlineOffset: 3 }}>Careers — We’re hiring</button>
             <button onClick={() => openLegal("privacy")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Privacy Policy</button>
             <button onClick={() => openLegal("terms")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey, textDecoration: "underline", textUnderlineOffset: 3 }}>Terms of Service</button>
             <span style={{ fontFamily: F.mono, fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: C.grey }}>© 2026 Artform Alterations LLC</span>
@@ -1222,6 +1471,7 @@ export default function SartaAppV4() {
         </div>
       </footer>
       {legal && <LegalPage page={legal} onClose={closeLegal} />}
+      {careers && !legal && <CareersPage onClose={closeCareers} />}
     </div>
   );
 }
