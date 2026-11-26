@@ -815,30 +815,23 @@ const CareersPage = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [link, setLink] = useState("");
   const [note, setNote] = useState("");
-  const [sending, setSending] = useState(false);
+  const sending = false;
   const [sent, setSent] = useState(false);
-  const [err, setErr] = useState(false);
+  const err = false;
   const ready = name.trim() && email.includes("@") && link.trim();
-  const apply = async () => {
-    if (!ready || sending) return;
-    setSending(true); setErr(false);
-    try {
-      const r = await fetch("https://formspree.io/f/xppaangy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          "Name": name.trim(),
-          email,
-          "Portfolio / Instagram": link.trim(),
-          "Note": note.trim(),
-          role: JOB.title,
-          source: "sarta.app careers",
-          _subject: `Application — ${JOB.title}`,
-        }),
-      });
-      if (r.ok) setSent(true); else setErr(true);
-    } catch (e) { setErr(true); }
-    setSending(false);
+  const APPLY_TO = "mattie@artformalterations.com";
+  const apply = () => {
+    if (!ready) return;
+    const subject = `Application — ${JOB.title} — ${name.trim()}`;
+    const bodyText = [
+      `Name: ${name.trim()}`,
+      `Email: ${email.trim()}`,
+      `Portfolio / Instagram: ${link.trim()}`,
+      "",
+      note.trim(),
+    ].join("\n");
+    window.location.href = `mailto:${APPLY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    setSent(true);
   };
   const h2 = { fontFamily: F.mono, fontWeight: 400, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: C.burgundy, margin: "0 0 18px" };
   const body = { fontFamily: F.mono, fontSize: 13.5, fontWeight: 400, lineHeight: 1.85, color: C.grey, margin: "0 0 16px" };
@@ -952,7 +945,10 @@ const CareersPage = ({ onClose }) => {
             Share a portfolio or the account you’re proudest of, and tell us a topic you’d love to explore for Sarta.
           </p>
           {sent ? (
-            <div style={{ fontFamily: F.mono, fontSize: 14, letterSpacing: "0.06em", color: C.glacier }}>Thank you — we’ll be in touch soon.</div>
+            <div style={{ fontFamily: F.mono, fontSize: 13.5, lineHeight: 1.8, letterSpacing: "0.04em", color: C.glacier }}>
+              Your email app should open with your application ready to send.<br />
+              Didn’t open? Email <a href="mailto:mattie@artformalterations.com?subject=Application%20%E2%80%94%20Social%20Media%20%26%20Editorial%20Creative" style={{ color: "#F8F3E7", textDecoration: "underline", textUnderlineOffset: 3 }}>mattie@artformalterations.com</a>
+            </div>
           ) : (
             <div style={{ display: "grid", gap: 10, textAlign: "left" }}>
               {(() => {
