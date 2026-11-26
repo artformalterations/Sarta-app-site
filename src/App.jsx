@@ -68,6 +68,10 @@ const GlobalStyle = () => (
   .mlink-4:hover span { color: #F8F3E7 !important; }
   .mlink-5:hover { background: #EDE6D8 !important; color: #5B0F1F !important; }
   .mlink-5:hover span { color: #5B0F1F !important; }
+  .mlink-6:hover { background: #7A2534 !important; color: #F8F3E7 !important; }
+  .mlink-6:hover > span:first-child { color: #F8F3E7 !important; }
+  .mlink-7:hover { background: #EFE3CB !important; color: #5B0F1F !important; }
+  .mlink-7:hover > span:first-child { color: #5B0F1F !important; }
   @keyframes fabricDrift1 { from { transform: translate(0,0); } to { transform: translate(-34px, 14px); } }
   @keyframes fabricDrift2 { from { transform: translate(0,0); } to { transform: translate(28px, -10px); } }
   @keyframes fabricDrift3 { from { transform: translate(0,0); } to { transform: translate(-20px, -12px); } }
@@ -641,11 +645,11 @@ const FloatNav = ({ scrollTo, onCareers }) => {
                   {l}
                 </button>
               ))}
-              <a href="https://sarta.studio" target="_blank" rel="noreferrer" onClick={() => setOpen(false)} style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 0 4px", fontFamily: F.sans, fontSize: 15, color: C.burgundy, textDecoration: "none", ...item(links.length) }}>
+              <a href="https://sarta.studio" target="_blank" rel="noreferrer" className="mlink mlink-6" onClick={() => setOpen(false)} style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 0", borderBottom: `1px dashed ${C.line}`, fontFamily: F.sans, fontSize: 15, color: C.burgundy, textDecoration: "none", ...item(links.length) }}>
                 <span style={{ display: "flex", flexShrink: 0 }}><CapIcon name="fittings" size={17} /></span>
                 Book a Fitting → Sarta Studio
               </a>
-              <button onClick={() => { setOpen(false); onCareers && onCareers(); }} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "13px 0 4px", fontFamily: F.sans, fontSize: 15, color: C.text, ...item(links.length + 1) }}>
+              <button className="mlink mlink-7" onClick={() => { setOpen(false); onCareers && onCareers(); }} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "13px 0", fontFamily: F.sans, fontSize: 15, color: C.text, ...item(links.length + 1) }}>
                 <span style={{ color: C.burgundy, display: "flex", flexShrink: 0 }}><CapIcon name="team" size={17} /></span>
                 Careers <span style={{ fontFamily: F.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: C.cream, background: C.burgundy, borderRadius: 100, padding: "3px 8px", marginLeft: 2 }}>Hiring</span>
               </button>
